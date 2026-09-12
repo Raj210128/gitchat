@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ─────────────────────────────────────────────────────────── */
+:root {
+  /* Background layers */
+  --bg-canvas:    #0d1117;
+  --bg-overlay:   #161b22;
+  --bg-subtle:    #1c2128;
+  --bg-muted:     #21262d;
+  --bg-emphasis:  #30363d;
+
+  /* Borders */
+  --border-default:  #30363d;
+  --border-muted:    #21262d;
+  --border-emphasis: #6e7681;
+
+  /* Text */
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #6e7681;
+  --text-link:      #a5b4fc;
+
+  /* Accent – indigo/violet gradient */
+  --accent-start:  #7c3aed;
+  --accent-end:    #4f46e5;
+  --accent-hover:  #6d28d9;
+  --accent-glow:   rgba(124, 58, 237, 0.25);
+
+  /* Status colors */
+  --color-success:  #3fb950;
+  --color-warning:  #d29922;
+  --color-danger:   #f85149;
+  --color-info:     #58a6ff;
+  --color-pending:  #8b949e;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
+  --shadow-xl:  0 16px 48px rgba(0,0,0,0.7);
+  --shadow-glow: 0 0 20px var(--accent-glow);
+
+  /* Radius */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast:   150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow:   350ms ease;
+
+  /* Font */
+  --font-sans: var(--font-inter, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  --font-mono: var(--font-jetbrains-mono, "JetBrains Mono", "Fira Code", monospace);
+}
+
+/* ── Tailwind Theme Bridge ──────────────────────────────────────────────────── */
+@theme inline {
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* ── Base Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-emphasis);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ── Keyframe Animations ────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes progress-indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--accent-glow); }
+  50%       { box-shadow: 0 0 24px var(--accent-glow); }
+}
+
+/* ── Utility Classes ────────────────────────────────────────────────────────── */
+.animate-fade-in    { animation: fadeIn 0.3s ease both; }
+.animate-slide-left { animation: slideInLeft 0.25s ease both; }
+.animate-slide-right{ animation: slideInRight 0.25s ease both; }
+.animate-spin       { animation: spin 0.9s linear infinite; }
+.animate-blink      { animation: blink-cursor 1s step-end infinite; }
+.animate-glow       { animation: glow-pulse 2s ease-in-out infinite; }
+
+/* Card / glass surface */
+.card {
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.glass {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(48, 54, 61, 0.6);
+  border-radius: var(--radius-lg);
+}
+
+/* Accent gradient */
+.gradient-accent {
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #a78bfa, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Streaming cursor */
+.streaming-cursor::after {
+  content: "▋";
+  color: var(--accent-start);
+  animation: blink-cursor 0.8s step-end infinite;
+  margin-left: 2px;
+}
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-muted) 25%,
+    var(--bg-emphasis) 50%,
+    var(--bg-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Code blocks inside prose */
+.prose-code pre {
+  background: var(--bg-canvas) !important;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-x: auto;
+  padding: 1rem;
+  margin: 0.75rem 0;
+}
+
+.prose-code code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--bg-subtle);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: #f97316;
+}
+
+/* Input focus ring */
+.focus-ring:focus-within {
+  outline: 2px solid var(--accent-start);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Scrollable message container */
+.messages-scroll {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
