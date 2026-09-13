@@ -7,7 +7,7 @@ from enum import Enum
 from typing import List, Optional
 from uuid import uuid4
 
-from pydantic import AnyHttpUrl, BaseModel, Field, field_validator
+from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field, field_validator
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -73,6 +73,8 @@ class IngestStatusResponse(BaseModel):
 # ─────────────────────────────────────────────────────────────────────────────
 class ChunkMetadata(BaseModel):
     """Metadata payload stored alongside each vector in Qdrant."""
+    model_config = ConfigDict(extra="ignore")  # tolerate unknown fields from Qdrant payload
+
     chunk_id: str = Field(default_factory=lambda: str(uuid4()))
     repo_id: str = Field(..., description="Unique identifier for the repository.")
     file_path: str = Field(..., description="Relative path from repo root.")

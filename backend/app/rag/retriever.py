@@ -106,7 +106,7 @@ async def dense_search(
     out: list[Tuple[ChunkMetadata, float]] = []
     for hit in results:
         try:
-            metadata = ChunkMetadata(**hit.payload)
+            metadata = ChunkMetadata.model_validate(hit.payload)
             out.append((metadata, hit.score))
         except Exception as exc:  # noqa: BLE001
             log.warning("dense.parse_error", error=str(exc))
@@ -127,7 +127,7 @@ async def _load_bm25_corpus(repo_id: str, redis) -> Tuple[BM25Okapi | None, List
         if raw:
             data = json.loads(raw)
             corpus: List[List[str]] = data["corpus"]
-            payloads: List[ChunkMetadata] = [ChunkMetadata(**p) for p in data["payloads"]]
+            payloads: List[ChunkMetadata] = [ChunkMetadata.model_validate(p) for p in data["payloads"]]
             return BM25Okapi(corpus), payloads
     except Exception as exc:  # noqa: BLE001
         log.warning("bm25.cache_miss", repo_id=repo_id, error=str(exc))
@@ -149,7 +149,7 @@ async def _load_bm25_corpus(repo_id: str, redis) -> Tuple[BM25Okapi | None, List
         )
         for r in records:
             try:
-                all_chunks.append(ChunkMetadata(**r.payload))
+                all_chunks.append(ChunkMetadata.model_validate(r.payload))
             except Exception:  # noqa: BLE001
                 pass
         if offset is None:
